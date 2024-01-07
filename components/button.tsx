@@ -13,8 +13,8 @@ export const Button = ({ valueRef }: Props) => {
       <a
         style={{
           border: "none",
-          width: "50px",
-          height: "50px",
+          width: "30px",
+          height: "30px",
           borderRadius: "50%",
           backgroundColor: checked ? "white" : "gray",
         }}

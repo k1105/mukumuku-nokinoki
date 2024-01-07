@@ -20,23 +20,28 @@ export default function Home() {
   const val7 = useRef<boolean>(false);
 
   const vals = [val0, val1, val2, val3, val4, val5, val6, val7];
+  let lastIsVisible = true;
+  let head = 0;
+  const bpm = 120;
+  const beatDuration = 60000 / bpm; // 1分間に60,000ミリ秒
 
   const sketch: Sketch = (p5) => {
-    let lastIsVisible = true;
-    let head = 0;
-
     p5.setup = () => p5.createCanvas(innerWidth, innerHeight);
 
     p5.draw = () => {
       p5.background(0);
       p5.fill(255);
       // ビートサイクル内の現在時刻を計算
-      let timeInBeat = p5.millis() % 500.0;
+      let timeInBeat = p5.millis() % beatDuration;
 
       // 円が見えるかどうかを決定
-      let isVisible = timeInBeat < 500.0 / 2;
+      let isVisible = timeInBeat < beatDuration / 2;
 
-      if (lastIsVisible !== isVisible) head = (head + 1) % 8;
+      const margin = (p5.width * 0.9 - 30) / 7;
+
+      if (lastIsVisible !== isVisible && isVisible) {
+        head = (head + 1) % 8;
+      }
 
       if (isVisible) {
         if (vals[head].current) {
@@ -45,8 +50,19 @@ export default function Home() {
           p5.fill(100);
         }
 
+        p5.push();
+        p5.fill(255, 30, 30);
+        p5.ellipse(
+          p5.width * 0.05 + head * margin + 15,
+          p5.height * 0.9 - 45,
+          10
+        );
+        p5.pop();
+
         p5.ellipse(p5.width / 2, p5.height / 2, 200, 200); // 円を描画
       }
+
+      lastIsVisible = isVisible;
     };
   };
 
@@ -60,6 +76,16 @@ export default function Home() {
       </Head>
       <main>
         <NextReactP5Wrapper sketch={sketch} />;
+        <p
+          style={{
+            position: "fixed",
+            top: "50px",
+            left: "50px",
+            color: "white",
+          }}
+        >
+          <span style={{ fontSize: "1.5rem" }}>{bpm}</span> bpm
+        </p>
         <div className="interface">
           {(() => {
             const res = [];
