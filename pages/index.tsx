@@ -10,7 +10,16 @@ import { useRef } from "react";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const vals = new Array(8).fill(useRef<boolean>(false));
+  const val0 = useRef<boolean>(false);
+  const val1 = useRef<boolean>(false);
+  const val2 = useRef<boolean>(false);
+  const val3 = useRef<boolean>(false);
+  const val4 = useRef<boolean>(false);
+  const val5 = useRef<boolean>(false);
+  const val6 = useRef<boolean>(false);
+  const val7 = useRef<boolean>(false);
+
+  const vals = [val0, val1, val2, val3, val4, val5, val6, val7];
 
   const sketch: Sketch = (p5) => {
     p5.setup = () => p5.createCanvas(innerWidth, innerHeight);
@@ -49,13 +58,14 @@ export default function Home() {
       <main>
         <NextReactP5Wrapper sketch={sketch} />;
         <div className="interface">
-          {(() => {
-            const res = [];
-            for (let i = 0; i < 8; i++) {
-              res.push(<Button ref={vals[i]} />);
-            }
-            return res;
-          })()}
+          <Button ref={val0} />
+          <Button ref={val1} />
+          <Button ref={val2} />
+          <Button ref={val3} />
+          <Button ref={val4} />
+          <Button ref={val5} />
+          <Button ref={val6} />
+          <Button ref={val7} />
         </div>
       </main>
     </>

@@ -1,3 +1,4 @@
+import React from "react";
 import { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
@@ -6,10 +7,7 @@ type Props = {
 
 export const Button = ({ ref }: Props) => {
   const [checked, setChecked] = useState<boolean>(false);
-  useEffect(() => {
-    console.log(checked);
-    if (ref !== undefined) ref.current = checked;
-  }, [checked]);
+
   return (
     <>
       <a
@@ -18,10 +16,13 @@ export const Button = ({ ref }: Props) => {
           width: "100px",
           height: "100px",
           borderRadius: "50px",
-          backgroundColor: checked ? "white" : "red",
+          backgroundColor: checked ? "white" : "gray",
         }}
         onClick={() => {
-          setChecked(!checked);
+          if (ref.current !== null) {
+            ref.current = !ref.current;
+            setChecked(ref.current);
+          }
         }}
       ></a>
     </>
