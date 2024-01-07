@@ -2,10 +2,10 @@ import React from "react";
 import { MutableRefObject, useEffect, useState } from "react";
 
 type Props = {
-  ref: MutableRefObject<boolean>;
+  valueRef: MutableRefObject<boolean>;
 };
 
-export const Button = ({ ref }: Props) => {
+export const Button = ({ valueRef }: Props) => {
   const [checked, setChecked] = useState<boolean>(false);
 
   return (
@@ -13,16 +13,14 @@ export const Button = ({ ref }: Props) => {
       <a
         style={{
           border: "none",
-          width: "100px",
-          height: "100px",
-          borderRadius: "50px",
+          width: "50px",
+          height: "50px",
+          borderRadius: "50%",
           backgroundColor: checked ? "white" : "gray",
         }}
         onClick={() => {
-          if (ref.current !== null) {
-            ref.current = !ref.current;
-            setChecked(ref.current);
-          }
+          if (valueRef.current !== null) valueRef.current = !checked;
+          setChecked(!checked);
         }}
       ></a>
     </>

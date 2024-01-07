@@ -22,26 +22,29 @@ export default function Home() {
   const vals = [val0, val1, val2, val3, val4, val5, val6, val7];
 
   const sketch: Sketch = (p5) => {
+    let lastIsVisible = true;
+    let head = 0;
+
     p5.setup = () => p5.createCanvas(innerWidth, innerHeight);
 
     p5.draw = () => {
       p5.background(0);
       p5.fill(255);
-      p5.push();
-      for (const val of vals) {
-        p5.text(val.current, 100, 100);
-        p5.translate(100, 0);
-      }
-      p5.pop();
-
       // ビートサイクル内の現在時刻を計算
       let timeInBeat = p5.millis() % 500.0;
 
       // 円が見えるかどうかを決定
       let isVisible = timeInBeat < 500.0 / 2;
 
+      if (lastIsVisible !== isVisible) head = (head + 1) % 8;
+
       if (isVisible) {
-        p5.fill(255); // 円の色を赤に設定
+        if (vals[head].current) {
+          p5.fill(255); // 円の色を赤に設定
+        } else {
+          p5.fill(100);
+        }
+
         p5.ellipse(p5.width / 2, p5.height / 2, 200, 200); // 円を描画
       }
     };
@@ -58,14 +61,14 @@ export default function Home() {
       <main>
         <NextReactP5Wrapper sketch={sketch} />;
         <div className="interface">
-          <Button ref={val0} />
-          <Button ref={val1} />
-          <Button ref={val2} />
-          <Button ref={val3} />
-          <Button ref={val4} />
-          <Button ref={val5} />
-          <Button ref={val6} />
-          <Button ref={val7} />
+          {(() => {
+            const res = [];
+            for (const val of vals) {
+              res.push(<Button valueRef={val} />);
+            }
+
+            return res;
+          })()}
         </div>
       </main>
     </>
